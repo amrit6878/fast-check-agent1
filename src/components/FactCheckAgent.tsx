@@ -66,61 +66,223 @@ const DEMO_DOC = {
 
 // ── Utility components ─────────────────────────────────────────────────────────
 
-function ConfidenceBar({ score, size = "md" }) {
-  const color = score >= 85 ? "#059669" : score >= 65 ? "#d97706" : "#dc2626";
+function ConfidenceBar({
+  score,
+  size = "md",
+}: {
+  score: number;
+  size?: "sm" | "md";
+}) {
+  const color =
+    score >= 85
+      ? "#059669"
+      : score >= 65
+        ? "#d97706"
+        : "#dc2626";
+
   const h = size === "sm" ? 4 : 6;
+
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-      <div style={{ flex: 1, background: "#f1f5f9", borderRadius: 99, height: h, overflow: "hidden" }}>
-        <div style={{ width: `${score}%`, height: "100%", background: color, borderRadius: 99, transition: "width 1s ease" }} />
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+      }}
+    >
+      <div
+        style={{
+          flex: 1,
+          background: "#f1f5f9",
+          borderRadius: 99,
+          height: h,
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            width: `${score}%`,
+            height: "100%",
+            background: color,
+            borderRadius: 99,
+            transition: "width 1s ease",
+          }}
+        />
       </div>
-      <span style={{ fontSize: 12, fontWeight: 600, color, minWidth: 32, textAlign: "right" }}>{score}%</span>
+
+      <span
+        style={{
+          fontSize: 12,
+          fontWeight: 600,
+          color,
+          minWidth: 32,
+          textAlign: "right",
+        }}
+      >
+        {score}%
+      </span>
     </div>
   );
 }
 
-function StatusBadge({ status, size = "md" }) {
-  const cfg = STATUS_CONFIG[status] || STATUS_CONFIG.VERIFIED;
-  const pad = size === "sm" ? "2px 8px" : "4px 12px";
-  const fs = size === "sm" ? 11 : 12;
+function StatusBadge({
+  status,
+  size = "md",
+}: {
+  status:
+  | "VERIFIED"
+  | "INACCURATE"
+  | "FALSE"
+  | "OUTDATED";
+  size?: "sm" | "md";
+}) {
+  const cfg =
+    STATUS_CONFIG[status] ||
+    STATUS_CONFIG.VERIFIED;
+
+  const pad =
+    size === "sm"
+      ? "2px 8px"
+      : "4px 12px";
+
+  const fs =
+    size === "sm" ? 11 : 12;
+
   return (
-    <span style={{
-      background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}`,
-      borderRadius: 99, padding: pad, fontSize: fs, fontWeight: 700,
-      letterSpacing: "0.04em", fontFamily: "monospace", display: "inline-flex", alignItems: "center", gap: 4
-    }}>
-      <span>{cfg.icon}</span> {cfg.label}
+    <span
+      style={{
+        background: cfg.bg,
+        color: cfg.color,
+        border: `1px solid ${cfg.border}`,
+        borderRadius: 99,
+        padding: pad,
+        fontSize: fs,
+        fontWeight: 700,
+        letterSpacing: "0.04em",
+        fontFamily: "monospace",
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 4,
+      }}
+    >
+      <span>{cfg.icon}</span>
+      {cfg.label}
     </span>
   );
 }
 
 
 
-function TruthScoreRing({ score }) {
-  const r = 42, cx = 50, cy = 50;
+function TruthScoreRing({
+  score,
+}: {
+  score: number;
+}) {
+  const r = 42;
+
+  const cx = 50;
+
+  const cy = 50;
+
   const circ = 2 * Math.PI * r;
-  const offset = circ - (score / 100) * circ;
-  const color = score >= 75 ? "#059669" : score >= 50 ? "#d97706" : "#dc2626";
+
+  const offset =
+    circ - (score / 100) * circ;
+
+  const color =
+    score >= 75
+      ? "#059669"
+      : score >= 50
+        ? "#d97706"
+        : "#dc2626";
+
   return (
-    <svg viewBox="0 0 100 100" style={{ width: 90, height: 90 }}>
-      <circle cx={cx} cy={cy} r={r} fill="none" stroke="#f1f5f9" strokeWidth={8} />
-      <circle cx={cx} cy={cy} r={r} fill="none" stroke={color} strokeWidth={8}
-        strokeDasharray={circ} strokeDashoffset={offset}
-        strokeLinecap="round" transform="rotate(-90 50 50)"
-        style={{ transition: "stroke-dashoffset 1.5s ease" }} />
-      <text x={cx} y={cy + 2} textAnchor="middle" dominantBaseline="middle"
-        style={{ fontSize: 20, fontWeight: 700, fill: color, fontFamily: "sans-serif" }}>{score}</text>
-      <text x={cx} y={cy + 16} textAnchor="middle" dominantBaseline="middle"
-        style={{ fontSize: 8, fill: "#94a3b8", fontFamily: "sans-serif" }}>TRUTH</text>
+    <svg
+      viewBox="0 0 100 100"
+      style={{
+        width: 90,
+        height: 90,
+      }}
+    >
+      <circle
+        cx={cx}
+        cy={cy}
+        r={r}
+        fill="none"
+        stroke="#f1f5f9"
+        strokeWidth={8}
+      />
+
+      <circle
+        cx={cx}
+        cy={cy}
+        r={r}
+        fill="none"
+        stroke={color}
+        strokeWidth={8}
+        strokeDasharray={circ}
+        strokeDashoffset={offset}
+        strokeLinecap="round"
+        transform="rotate(-90 50 50)"
+        style={{
+          transition:
+            "stroke-dashoffset 1.5s ease",
+        }}
+      />
+
+      <text
+        x={cx}
+        y={cy + 2}
+        textAnchor="middle"
+        dominantBaseline="middle"
+        style={{
+          fontSize: 20,
+          fontWeight: 700,
+          fill: color,
+          fontFamily: "sans-serif",
+        }}
+      >
+        {score}
+      </text>
+
+      <text
+        x={cx}
+        y={cy + 16}
+        textAnchor="middle"
+        dominantBaseline="middle"
+        style={{
+          fontSize: 8,
+          fill: "#94a3b8",
+          fontFamily: "sans-serif",
+        }}
+      >
+        TRUTH
+      </text>
     </svg>
   );
 }
 
 function LoadingDots() {
   return (
-    <span style={{ display: "inline-flex", gap: 4 }}>
-      {[0, 1, 2].map(i => (
-        <span key={i} style={{ width: 5, height: 5, borderRadius: "50%", background: "#3b82f6", display: "inline-block", animation: `bounce 1.2s ${i * 0.2}s infinite` }} />
+    <span
+      style={{
+        display: "inline-flex",
+        gap: 4,
+      }}
+    >
+      {[0, 1, 2].map((i) => (
+        <span
+          key={i}
+          style={{
+            width: 5,
+            height: 5,
+            borderRadius: "50%",
+            background: "#3b82f6",
+            display: "inline-block",
+            animation: `bounce 1.2s ${i * 0.2
+              }s infinite`,
+          }}
+        />
       ))}
     </span>
   );
@@ -128,51 +290,287 @@ function LoadingDots() {
 
 // ── API Key Modal ──────────────────────────────────────────────────────────────
 
-function ApiKeyModal({ onSave, onClose, current }) {
-  const [key, setKey] = useState(current || "");
-  const [validating, setValidating] = useState(false);
-  const [error, setError] = useState("");
+function ApiKeyModal({
+  onSave,
+  onClose,
+  current,
+}: {
+  onSave: (key: string) => void;
+  onClose: () => void;
+  current?: string;
+}) {
+  const [key, setKey] = useState(
+    current || ""
+  );
+
+  const [validating, setValidating] =
+    useState(false);
+
+  const [error, setError] =
+    useState("");
+
   const [ok, setOk] = useState(false);
 
   async function validate() {
-    if (!key.startsWith("AIza")) { setError("Invalid key format. Gemini keys start with 'AIza'."); return; }
-    setValidating(true); setError(""); setOk(false);
+    if (!key.startsWith("AIza")) {
+      setError(
+        "Invalid key format. Gemini keys start with 'AIza'."
+      );
+
+      return;
+    }
+
+    setValidating(true);
+    setError("");
+    setOk(false);
+
     try {
-      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`);
-      if (r.ok) { setOk(true); setTimeout(() => { onSave(key); onClose(); }, 800); }
-      else { const d = await r.json(); setError(d?.error?.message || "Invalid API key."); }
-    } catch { setError("Network error. Check your connection."); }
+      const r = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models?key=${key}`
+      );
+
+      if (r.ok) {
+        setOk(true);
+
+        setTimeout(() => {
+          onSave(key);
+          onClose();
+        }, 800);
+      } else {
+        const d = await r.json();
+
+        setError(
+          d?.error?.message ||
+          "Invalid API key."
+        );
+      }
+    } catch {
+      setError(
+        "Network error. Check your connection."
+      );
+    }
+
     setValidating(false);
   }
 
   return (
-    <div style={{ position: "fixed", inset: 0, background: "rgba(15,23,42,0.6)", backdropFilter: "blur(4px)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ background: "#fff", borderRadius: 16, padding: "2rem", width: 460, boxShadow: "0 25px 50px rgba(0,0,0,0.15)", border: "1px solid #e2e8f0" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: "1.5rem" }}>
-          <div style={{ width: 40, height: 40, borderRadius: 10, background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>🔑</div>
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        background:
+          "rgba(15,23,42,0.6)",
+        backdropFilter: "blur(4px)",
+        zIndex: 1000,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: 16,
+          padding: "2rem",
+          width: 460,
+          boxShadow:
+            "0 25px 50px rgba(0,0,0,0.15)",
+          border:
+            "1px solid #e2e8f0",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            marginBottom: "1.5rem",
+          }}
+        >
+          <div
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 10,
+              background: "#eff6ff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 20,
+            }}
+          >
+            🔑
+          </div>
+
           <div>
-            <div style={{ fontWeight: 700, fontSize: 16, color: "#0f172a" }}>Connect Gemini API</div>
-            <div style={{ fontSize: 13, color: "#64748b" }}>Your key is stored locally and never sent to our servers</div>
+            <div
+              style={{
+                fontWeight: 700,
+                fontSize: 16,
+                color: "#0f172a",
+              }}
+            >
+              Connect Gemini API
+            </div>
+
+            <div
+              style={{
+                fontSize: 13,
+                color: "#64748b",
+              }}
+            >
+              Your key is stored locally
+              and never sent to servers
+            </div>
           </div>
         </div>
-        <div style={{ marginBottom: "1rem" }}>
-          <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>API Key</label>
-          <input type="password" value={key} onChange={e => setKey(e.target.value)}
+
+        <div
+          style={{
+            marginBottom: "1rem",
+          }}
+        >
+          <label
+            style={{
+              fontSize: 13,
+              fontWeight: 600,
+              color: "#374151",
+              display: "block",
+              marginBottom: 6,
+            }}
+          >
+            API Key
+          </label>
+
+          <input
+            type="password"
+            value={key}
+            onChange={(e) =>
+              setKey(
+                e.target.value
+              )
+            }
             placeholder="AIzaSy..."
-            style={{ width: "100%", padding: "10px 14px", border: `1.5px solid ${error ? "#fca5a5" : ok ? "#6ee7b7" : "#e2e8f0"}`, borderRadius: 8, fontSize: 14, fontFamily: "monospace", outline: "none", boxSizing: "border-box", color: "#0f172a", background: "#f8fafc" }}
-            onKeyDown={e => e.key === "Enter" && validate()} />
-          {error && <p style={{ color: "#dc2626", fontSize: 12, marginTop: 6 }}>{error}</p>}
-          {ok && <p style={{ color: "#059669", fontSize: 12, marginTop: 6 }}>✓ Connected successfully!</p>}
+            style={{
+              width: "100%",
+              padding: "10px 14px",
+              border: `1.5px solid ${error
+                  ? "#fca5a5"
+                  : ok
+                    ? "#6ee7b7"
+                    : "#e2e8f0"
+                }`,
+              borderRadius: 8,
+              fontSize: 14,
+              fontFamily:
+                "monospace",
+              outline: "none",
+              boxSizing:
+                "border-box",
+              color: "#0f172a",
+              background:
+                "#f8fafc",
+            }}
+            onKeyDown={(e) =>
+              e.key ===
+              "Enter" &&
+              validate()
+            }
+          />
+
+          {error && (
+            <p
+              style={{
+                color: "#dc2626",
+                fontSize: 12,
+                marginTop: 6,
+              }}
+            >
+              {error}
+            </p>
+          )}
+
+          {ok && (
+            <p
+              style={{
+                color: "#059669",
+                fontSize: 12,
+                marginTop: 6,
+              }}
+            >
+              ✓ Connected
+              successfully!
+            </p>
+          )}
         </div>
-        <p style={{ fontSize: 12, color: "#94a3b8", marginBottom: "1.5rem" }}>
-          Get your free API key at{" "}
-          <a href="https://aistudio.google.com" target="_blank" rel="noopener noreferrer" style={{ color: "#3b82f6" }}>aistudio.google.com</a>
+
+        <p
+          style={{
+            fontSize: 12,
+            color: "#94a3b8",
+            marginBottom: "1.5rem",
+          }}
+        >
+          Get your free API key
+          at{" "}
+          <a
+            href="https://aistudio.google.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: "#3b82f6",
+            }}
+          >
+            aistudio.google.com
+          </a>
         </p>
-        <div style={{ display: "flex", gap: 8 }}>
-          <button onClick={onClose} style={{ flex: 1, padding: "10px", border: "1px solid #e2e8f0", borderRadius: 8, background: "#f8fafc", cursor: "pointer", fontSize: 14, color: "#374151" }}>Cancel</button>
-          <button onClick={validate} disabled={validating || !key}
-            style={{ flex: 2, padding: "10px", border: "none", borderRadius: 8, background: validating ? "#93c5fd" : "#3b82f6", color: "#fff", cursor: "pointer", fontSize: 14, fontWeight: 600 }}>
-            {validating ? "Validating..." : "Connect & Save"}
+
+        <div
+          style={{
+            display: "flex",
+            gap: 8,
+          }}
+        >
+          <button
+            onClick={onClose}
+            style={{
+              flex: 1,
+              padding: "10px",
+              border:
+                "1px solid #e2e8f0",
+              borderRadius: 8,
+              background: "#f8fafc",
+              cursor: "pointer",
+              fontSize: 14,
+              color: "#374151",
+            }}
+          >
+            Cancel
+          </button>
+
+          <button
+            onClick={validate}
+            disabled={
+              validating || !key
+            }
+            style={{
+              flex: 2,
+              padding: "10px",
+              border: "none",
+              borderRadius: 8,
+              background:
+                validating
+                  ? "#93c5fd"
+                  : "#3b82f6",
+              color: "#fff",
+              cursor: "pointer",
+              fontSize: 14,
+              fontWeight: 600,
+            }}
+          >
+            {validating
+              ? "Validating..."
+              : "Connect & Save"}
           </button>
         </div>
       </div>
@@ -182,47 +580,239 @@ function ApiKeyModal({ onSave, onClose, current }) {
 
 // ── Sidebar ────────────────────────────────────────────────────────────────────
 
-function Sidebar({ page, setPage, geminiConnected, docReady }) {
+function Sidebar({
+  page,
+  setPage,
+  geminiConnected,
+  docReady,
+}: {
+  page: string;
+  setPage: (page: string) => void;
+  geminiConnected: boolean;
+  docReady: boolean;
+}) {
   const nav = [
-    { id: "landing", icon: "🏠", label: "Home" },
-    { id: "dashboard", icon: "⊞", label: "Dashboard" },
-    { id: "verify", icon: "⬆", label: "Verify" },
-    { id: "report", icon: "📋", label: "Analysis", disabled: !docReady },
-    { id: "settings", icon: "⚙", label: "Settings" },
+    {
+      id: "landing",
+      icon: "🏠",
+      label: "Home",
+    },
+    {
+      id: "dashboard",
+      icon: "⊞",
+      label: "Dashboard",
+    },
+    {
+      id: "verify",
+      icon: "⬆",
+      label: "Verify",
+    },
+    {
+      id: "report",
+      icon: "📋",
+      label: "Analysis",
+      disabled: !docReady,
+    },
+    {
+      id: "settings",
+      icon: "⚙",
+      label: "Settings",
+    },
   ];
+
   return (
-    <div style={{ width: 220, minHeight: "100vh", background: "#0f172a", display: "flex", flexDirection: "column", padding: "1.5rem 0", borderRight: "1px solid #1e293b", flexShrink: 0 }}>
-      <div style={{ padding: "0 1.25rem 1.5rem", borderBottom: "1px solid #1e293b" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg,#3b82f6,#1d4ed8)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>⚖</div>
+    <div
+      style={{
+        width: 220,
+        minHeight: "100vh",
+        background: "#0f172a",
+        display: "flex",
+        flexDirection: "column",
+        padding: "1.5rem 0",
+        borderRight:
+          "1px solid #1e293b",
+        flexShrink: 0,
+      }}
+    >
+      <div
+        style={{
+          padding:
+            "0 1.25rem 1.5rem",
+          borderBottom:
+            "1px solid #1e293b",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+          }}
+        >
+          <div
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: 8,
+              background:
+                "linear-gradient(135deg,#3b82f6,#1d4ed8)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent:
+                "center",
+              fontSize: 16,
+            }}
+          >
+            ⚖
+          </div>
+
           <div>
-            <div style={{ fontWeight: 800, fontSize: 14, color: "#f8fafc", letterSpacing: "-0.01em" }}>FactCheck</div>
-            <div style={{ fontSize: 10, color: "#475569", letterSpacing: "0.08em", textTransform: "uppercase" }}>Agent v2.0</div>
+            <div
+              style={{
+                fontWeight: 800,
+                fontSize: 14,
+                color: "#f8fafc",
+                letterSpacing:
+                  "-0.01em",
+              }}
+            >
+              FactCheck
+            </div>
+
+            <div
+              style={{
+                fontSize: 10,
+                color: "#475569",
+                letterSpacing:
+                  "0.08em",
+                textTransform:
+                  "uppercase",
+              }}
+            >
+              Agent v2.0
+            </div>
           </div>
         </div>
       </div>
-      <nav style={{ flex: 1, padding: "1rem 0.75rem" }}>
-        {nav.map(n => (
-          <button key={n.id} onClick={() => !n.disabled && setPage(n.id)} disabled={n.disabled}
+
+      <nav
+        style={{
+          flex: 1,
+          padding: "1rem 0.75rem",
+        }}
+      >
+        {nav.map((n) => (
+          <button
+            key={n.id}
+            onClick={() =>
+              !n.disabled &&
+              setPage(n.id)
+            }
+            disabled={n.disabled}
             style={{
-              width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 12px",
-              borderRadius: 8, border: "none", cursor: n.disabled ? "not-allowed" : "pointer", marginBottom: 2,
-              background: page === n.id ? "rgba(59,130,246,0.15)" : "transparent",
-              color: n.disabled ? "#334155" : page === n.id ? "#93c5fd" : "#94a3b8",
-              fontSize: 14, fontWeight: page === n.id ? 600 : 400, textAlign: "left",
-              borderLeft: page === n.id ? "2px solid #3b82f6" : "2px solid transparent",
-              transition: "all 0.15s",
-            }}>
-            <span style={{ fontSize: 16 }}>{n.icon}</span> {n.label}
-            {n.id === "report" && !docReady && <span style={{ marginLeft: "auto", fontSize: 10, color: "#334155" }}>—</span>}
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "10px 12px",
+              borderRadius: 8,
+              border: "none",
+              cursor: n.disabled
+                ? "not-allowed"
+                : "pointer",
+              marginBottom: 2,
+              background:
+                page === n.id
+                  ? "rgba(59,130,246,0.15)"
+                  : "transparent",
+              color: n.disabled
+                ? "#334155"
+                : page === n.id
+                  ? "#93c5fd"
+                  : "#94a3b8",
+              fontSize: 14,
+              fontWeight:
+                page === n.id
+                  ? 600
+                  : 400,
+              textAlign: "left",
+              borderLeft:
+                page === n.id
+                  ? "2px solid #3b82f6"
+                  : "2px solid transparent",
+              transition:
+                "all 0.15s",
+            }}
+          >
+            <span
+              style={{
+                fontSize: 16,
+              }}
+            >
+              {n.icon}
+            </span>
+
+            {n.label}
+
+            {n.id === "report" &&
+              !docReady && (
+                <span
+                  style={{
+                    marginLeft:
+                      "auto",
+                    fontSize: 10,
+                    color: "#334155",
+                  }}
+                >
+                  —
+                </span>
+              )}
           </button>
         ))}
       </nav>
-      <div style={{ padding: "1rem 1.25rem", borderTop: "1px solid #1e293b" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ width: 8, height: 8, borderRadius: "50%", background: geminiConnected ? "#22c55e" : "#ef4444", boxShadow: geminiConnected ? "0 0 6px #22c55e" : "none" }} />
-          <span style={{ fontSize: 12, color: geminiConnected ? "#86efac" : "#f87171" }}>
-            {geminiConnected ? "Gemini Connected" : "Not Connected"}
+
+      <div
+        style={{
+          padding: "1rem 1.25rem",
+          borderTop:
+            "1px solid #1e293b",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+          }}
+        >
+          <div
+            style={{
+              width: 8,
+              height: 8,
+              borderRadius: "50%",
+              background:
+                geminiConnected
+                  ? "#22c55e"
+                  : "#ef4444",
+              boxShadow:
+                geminiConnected
+                  ? "0 0 6px #22c55e"
+                  : "none",
+            }}
+          />
+
+          <span
+            style={{
+              fontSize: 12,
+              color:
+                geminiConnected
+                  ? "#86efac"
+                  : "#f87171",
+            }}
+          >
+            {geminiConnected
+              ? "Gemini Connected"
+              : "Not Connected"}
           </span>
         </div>
       </div>
