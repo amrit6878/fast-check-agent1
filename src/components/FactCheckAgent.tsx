@@ -1,6 +1,6 @@
 "use client";
 // @ts-nocheck
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const GEMINI_MODELS = ["gemini-2.0-flash", "gemini-1.5-pro"];
 
@@ -94,9 +94,7 @@ function StatusBadge({ status, size = "md" }) {
   );
 }
 
-function Skeleton({ w = "100%", h = 16, style = {} }) {
-  return <div style={{ width: w, height: h, background: "linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%)", backgroundSize: "200% 100%", animation: "shimmer 1.5s infinite", borderRadius: 6, ...style }} />;
-}
+
 
 function TruthScoreRing({ score }) {
   const r = 42, cx = 50, cy = 50;
@@ -121,7 +119,7 @@ function TruthScoreRing({ score }) {
 function LoadingDots() {
   return (
     <span style={{ display: "inline-flex", gap: 4 }}>
-      {[0,1,2].map(i => (
+      {[0, 1, 2].map(i => (
         <span key={i} style={{ width: 5, height: 5, borderRadius: "50%", background: "#3b82f6", display: "inline-block", animation: `bounce 1.2s ${i * 0.2}s infinite` }} />
       ))}
     </span>
@@ -289,7 +287,7 @@ function LandingPage({ setPage }) {
       {/* Stats */}
       <div style={{ maxWidth: 900, margin: "0 auto 4rem", padding: "0 2rem" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 }}>
-          {[["98.2%","Detection Rate"],["< 45s","Avg. Verify Time"],["12+ Sources","Per Claim"]].map(([v,l]) => (
+          {[["98.2%", "Detection Rate"], ["< 45s", "Avg. Verify Time"], ["12+ Sources", "Per Claim"]].map(([v, l]) => (
             <div key={l} style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 12, padding: "1.5rem", textAlign: "center" }}>
               <div style={{ fontSize: 28, fontWeight: 800, color: "#0f172a" }}>{v}</div>
               <div style={{ fontSize: 13, color: "#64748b", marginTop: 4 }}>{l}</div>
@@ -385,7 +383,7 @@ function Dashboard({ setPage, results }) {
           <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 4 }}>All Systems Operational</div>
           <div style={{ fontSize: 12, opacity: 0.7 }}>Gemini API · Web Search · OCR Engine</div>
           <div style={{ display: "flex", gap: 6, marginTop: 12 }}>
-            {["AI","WEB","OCR"].map(s => <span key={s} style={{ background: "rgba(255,255,255,0.2)", borderRadius: 4, padding: "2px 8px", fontSize: 10, fontWeight: 600 }}>{s} ✓</span>)}
+            {["AI", "WEB", "OCR"].map(s => <span key={s} style={{ background: "rgba(255,255,255,0.2)", borderRadius: 4, padding: "2px 8px", fontSize: 10, fontWeight: 600 }}>{s} ✓</span>)}
           </div>
         </div>
       </div>
@@ -401,13 +399,13 @@ function Dashboard({ setPage, results }) {
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
               <thead>
                 <tr style={{ background: "#f8fafc" }}>
-                  {["Claim (excerpt)","Entity","Status","Confidence","Page"].map(h => (
+                  {["Claim (excerpt)", "Entity", "Status", "Confidence", "Page"].map(h => (
                     <th key={h} style={{ padding: "10px 16px", textAlign: "left", color: "#64748b", fontWeight: 600, borderBottom: "1px solid #e2e8f0" }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {results.slice(0,5).map(r => (
+                {results.slice(0, 5).map(r => (
                   <tr key={r.id} style={{ borderBottom: "1px solid #f1f5f9" }}>
                     <td style={{ padding: "12px 16px", color: "#0f172a", maxWidth: 280 }}>
                       <div style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.claim}</div>
@@ -436,14 +434,14 @@ function Dashboard({ setPage, results }) {
 
 // ── Verify Page ────────────────────────────────────────────────────────────────
 
-function VerifyPage({ apiKey, onComplete, setPage, geminiConnected, showApiModal }) {
+function VerifyPage({ apiKey, onComplete, setPage, showApiModal }) {
   const [file, setFile] = useState(null);
   const [stage, setStage] = useState("idle"); // idle | uploading | extracting | verifying | done
   const [logs, setLogs] = useState([]);
   const [progress, setProgress] = useState(0);
   const [dragOver, setDragOver] = useState(false);
   const [extractedClaims, setExtractedClaims] = useState([]);
-  const [useDemo, setUseDemo] = useState(false);
+  // const [useDemo, setUseDemo] = useState(false); // removed: unused
   const fileRef = useRef();
   const logRef = useRef();
 
@@ -459,7 +457,6 @@ function VerifyPage({ apiKey, onComplete, setPage, geminiConnected, showApiModal
 
   async function runAnalysis(isDemo = false) {
     if (!isDemo && !file) return;
-    setUseDemo(isDemo);
     if (!apiKey && !isDemo) { showApiModal(); return; }
 
     setStage("uploading"); setProgress(5); setLogs([]);
@@ -505,7 +502,7 @@ The smartphone market was worth $1.2 trillion in 2020.`;
       await sleep(600);
       addLog(`🔗 Cross-referencing: "${claims[i].claim.substring(0, 50)}..."`, "info");
       await sleep(400);
-      addLog(`✓ Claim ${i+1}/${claims.length} verdict: ${claims[i].status}`, claims[i].status === "VERIFIED" ? "success" : "warn");
+      addLog(`✓ Claim ${i + 1}/${claims.length} verdict: ${claims[i].status}`, claims[i].status === "VERIFIED" ? "success" : "warn");
       setProgress(60 + ((i + 1) / claims.length) * 30);
       setExtractedClaims(claims.slice(0, i + 1));
     }
@@ -553,7 +550,7 @@ Return ONLY valid JSON array, no markdown.`;
     onDrop: e => { e.preventDefault(); setDragOver(false); handleFile(e.dataTransfer.files[0]); },
   };
 
-  const isRunning = ["uploading","extracting","verifying"].includes(stage);
+  const isRunning = ["uploading", "extracting", "verifying"].includes(stage);
 
   return (
     <div style={{ padding: "2rem", maxWidth: 1100, margin: "0 auto" }}>
@@ -649,7 +646,7 @@ Return ONLY valid JSON array, no markdown.`;
             <div style={{ padding: "1rem", maxHeight: 550, overflowY: "auto" }}>
               {extractedClaims.length === 0 && !isRunning && (
                 <div style={{ textAlign: "center", padding: "2rem 1rem", color: "#94a3b8", fontSize: 13 }}>
-                  Claims will appear here as they're extracted...
+                  Claims will appear here as they&apos;re extracted...
                 </div>
               )}
               {extractedClaims.map((c, i) => (
@@ -695,7 +692,7 @@ function ClaimCard({ claim, idx }) {
             <span style={{ fontSize: 11, color: "#94a3b8" }}>·</span>
             <span style={{ fontSize: 11, color: "#64748b", background: "#f1f5f9", padding: "1px 8px", borderRadius: 4 }}>{claim.entity}</span>
           </div>
-          <p style={{ fontSize: 14, fontWeight: 600, color: "#0f172a", lineHeight: 1.5, margin: 0 }}>"{claim.claim}"</p>
+          <p style={{ fontSize: 14, fontWeight: 600, color: "#0f172a", lineHeight: 1.5, margin: 0 }}>&quot;{claim.claim}&quot;</p>
         </div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8, flexShrink: 0 }}>
           <StatusBadge status={claim.status} />
@@ -757,9 +754,9 @@ function ClaimCard({ claim, idx }) {
 
 // ── Report Page ────────────────────────────────────────────────────────────────
 
-function ReportPage({ results, setPage }) {
+function ReportPage({ results }) {
   const claims = results.length > 0 ? results : DEMO_DOC.claims;
-  const doc = results.length > 0 ? { ...DEMO_DOC, claims, truthScore: Math.round(claims.filter(c=>c.status==="VERIFIED").length/claims.length*100) } : DEMO_DOC;
+  const doc = results.length > 0 ? { ...DEMO_DOC, claims, truthScore: Math.round(claims.filter(c => c.status === "VERIFIED").length / claims.length * 100) } : DEMO_DOC;
 
   const counts = { VERIFIED: 0, INACCURATE: 0, FALSE: 0, OUTDATED: 0 };
   claims.forEach(c => counts[c.status] = (counts[c.status] || 0) + 1);
@@ -819,7 +816,7 @@ function ReportPage({ results, setPage }) {
       </div>
 
       {/* Claims */}
-      {filtered.map((c, i) => <ClaimCard key={c.id} claim={c} idx={claims.indexOf(c)} />)}
+      {filtered.map((c) => <ClaimCard key={c.id} claim={c} idx={claims.indexOf(c)} />)}
 
       {filtered.length === 0 && (
         <div style={{ textAlign: "center", padding: "3rem", color: "#94a3b8" }}>No claims with this status</div>
